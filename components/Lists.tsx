@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faCirclePlus, faMinus} from '@fortawesome/free-solid-svg-icons';
+import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
+import ListElement from './ListElement';
 
 import {
   darkContrast,
@@ -28,9 +29,16 @@ interface remindersType {
   task: string;
 }
 
+interface ListElementProps {
+  id: number;
+  task: string;
+}
+
 export default function Lists() {
   const [reminders, setReminders] = useState<remindersType[]>([
     {id: 0, task: 'Coding exercise!'},
+    {id: 1, task: 'Something!'},
+    {id: 2, task: 'Nothing!'},
   ]);
 
   const [input, setInput] = useState('');
@@ -42,10 +50,12 @@ export default function Lists() {
   class Reminder {
     id: number;
     task: string;
+
     constructor(task: string) {
       this.task = task;
       this.id = Date.now();
     }
+    setReminder() {}
   }
 
   const addItem = () => {
@@ -58,45 +68,40 @@ export default function Lists() {
     }
   };
 
-  const deleteItem = (id: number) => {
-    setReminders(reminders.filter(element => element.id !== id));
-  };
+  // const deleteItem = (id: number) => {
+  //   setReminders(reminders.filter(element => element.id !== id));
+  //   console.log(id);
+  // };
 
   return (
-    <View style={style.background}>
+    <>
+      <View style={style.inputAndAddButtonContainer}>
+        <TextInput
+          keyboardType="default"
+          placeholder="Let's Go!"
+          style={style.input}
+          value={input}
+          onChangeText={onChange}
+        />
+        <TouchableOpacity onPress={addItem} style={style.inputAddButton}>
+          <FontAwesomeIcon color={toggleOn} size={24} icon={faPlus} />
+        </TouchableOpacity>
+      </View>
       <View style={style.container}>
-        <View style={style.inputContainer}>
-          <TextInput
-            keyboardType="default"
-            placeholder="New activity"
-            style={style.input}
-            value={input}
-            onChangeText={onChange}
-          />
-          <TouchableOpacity onPress={addItem} style={style.button}>
-            <FontAwesomeIcon color={toggleOn} icon={faCirclePlus} />
-          </TouchableOpacity>
-        </View>
         <FlatList
           data={reminders}
           renderItem={({item}) => (
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <Text style={style.text}>{item.task}</Text>
-
-              <TouchableOpacity
-                onPress={() => deleteItem(item.id)}
-                style={style.button}>
-                <FontAwesomeIcon icon={faMinus} color="firebrick" />
-              </TouchableOpacity>
-            </TouchableOpacity>
+            <>
+              <ListElement task={item.task} id={item.id} />
+              {/* <TouchableOpacity
+              onPress={() => deleteItem(item.id)}
+              style={style.button}>
+              <FontAwesomeIcon icon={faMinus} color="firebrick" />
+            </TouchableOpacity> */}
+            </>
           )}
         />
       </View>
-    </View>
+    </>
   );
 }

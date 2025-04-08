@@ -16,22 +16,22 @@ export default function Settings() {
     <View style={style.background}>
       <View style={style.container}>
         <TouchableOpacity>
-          <Text style={style.text}>Notifications</Text>
+          <Text style={style.textInSettings}>Notifications</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={style.text}>Change Theme</Text>
+          <Text style={style.textInSettings}>Change Theme</Text>
         </TouchableOpacity>
       </View>
 
       <View style={style.container}>
         <TouchableOpacity>
-          <Text style={style.text}>Import Data</Text>
+          <Text style={style.textInSettings}>Import Data</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={style.text}>Export Data</Text>
+          <Text style={style.textInSettings}>Export Data</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={style.text}>Reset</Text>
+          <Text style={style.textInSettings}>Reset</Text>
         </TouchableOpacity>
       </View>
     </View>

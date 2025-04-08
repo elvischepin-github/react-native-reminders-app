@@ -13,37 +13,59 @@ export const style = StyleSheet.create({
   },
   container: {
     backgroundColor: darkContrast,
-    marginHorizontal: 10,
-    marginBottom: 10,
   },
-  input: {
-    backgroundColor: 'white',
-    color: darkContrast,
-    height: 40,
-    width: 300,
-    paddingLeft: 20,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  button: {
-    backgroundColor: lightContrast,
-    height: 40,
-    width: 50,
-    borderRadius: 5,
+
+  // Lists
+  inputAndAddButtonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
+  input: {
+    width: '100%',
+    height: 40,
+    backgroundColor: 'white',
+    color: 'black',
+    textAlign: 'center',
+  },
+  inputAddButton: {
+    width: '100%',
+    height: 40,
+    backgroundColor: lightContrast,
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'content-box',
+    borderBottomWidth: 4,
+  },
+
+  textReminderMain: {
+    backgroundColor: lightContrast,
+    color: 'white',
+    fontSize: 20,
+  },
+  textReminderNote: {
+    backgroundColor: lightContrast,
+    color: 'white',
+    fontSize: 14,
+  },
+  setDateAndTimeContainer: {
+    width: '100%',
+    backgroundColor: lightContrast,
+    flexDirection: 'row',
+    gap: 15,
+  },
+  setDateAndTimeButtons: {
+    backgroundColor: lightContrast,
+    color: 'white',
+    fontSize: 16,
+  },
+
+  // Settings
+  textInSettings: {
     backgroundColor: lightContrast,
     color: 'white',
     textAlign: 'left',
     fontSize: 20,
     padding: 10,
     paddingLeft: 50,
-    width: 300,
   },
 });
