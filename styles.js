@@ -16,10 +16,6 @@ export const style = StyleSheet.create({
   },
 
   // Lists
-  inputAndAddButtonContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   input: {
     width: '100%',
     height: 40,
@@ -31,8 +27,6 @@ export const style = StyleSheet.create({
     width: '100%',
     height: 40,
     backgroundColor: lightContrast,
-    alignItems: 'center',
-    justifyContent: 'center',
     boxSizing: 'content-box',
     borderBottomWidth: 4,
   },
@@ -51,11 +45,10 @@ export const style = StyleSheet.create({
     width: '100%',
     backgroundColor: lightContrast,
     flexDirection: 'row',
-    gap: 15,
+    gap: 20,
   },
   setDateAndTimeButtons: {
     backgroundColor: lightContrast,
-    color: 'white',
     fontSize: 16,
   },
 
@@ -67,5 +60,11 @@ export const style = StyleSheet.create({
     fontSize: 20,
     padding: 10,
     paddingLeft: 50,
+  },
+
+  // Other
+  centering: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

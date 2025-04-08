@@ -1,14 +1,13 @@
 import {useState} from 'react';
-import {
-  Button,
-  Platform,
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import {Platform, Text, TouchableOpacity, View} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {lightContrast, style} from '../styles';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faCalendar,
+  faClock,
+  faCircleCheck,
+} from '@fortawesome/free-solid-svg-icons';
+import {style} from '../styles';
 
 interface ListElementProps {
   id: number;
@@ -59,7 +58,7 @@ export default function ListElement({task, id}: ListElementProps) {
   const pushDoneDateAndTime = () => {
     setShow(false);
     setDoneButtonVisibility(false);
-    printTime();
+    // printTime();
   };
 
   return (
@@ -71,30 +70,39 @@ export default function ListElement({task, id}: ListElementProps) {
       <Text style={style.textReminderNote}>Tomorrow, 07:00 🔁 Daily</Text>
 
       <TouchableOpacity style={style.setDateAndTimeContainer}>
-        <Text style={style.setDateAndTimeButtons} onPress={showDatepicker}>
-          🗓️ Add Date
+        <Text
+          style={[style.setDateAndTimeButtons, style.centering]}
+          onPress={showDatepicker}>
+          <FontAwesomeIcon icon={faCalendar} />
+          Add Date
         </Text>
-        <Text style={style.setDateAndTimeButtons} onPress={showTimepicker}>
-          🕘 Add Time
+        <Text
+          style={[style.setDateAndTimeButtons, style.centering]}
+          onPress={showTimepicker}>
+          <FontAwesomeIcon icon={faClock} />
+          Add Time
         </Text>
         {doneButtonVisibility ? (
           <Text
-            style={style.setDateAndTimeButtons}
+            style={[style.setDateAndTimeButtons, style.centering]}
             onPress={pushDoneDateAndTime}>
+            <FontAwesomeIcon icon={faCircleCheck} />
             Done
           </Text>
         ) : null}
       </TouchableOpacity>
       {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          onChange={onChange}
-          display="spinner"
-          textColor="#FFFFFF"
-        />
+        <View style={style.centering}>
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            onChange={onChange}
+            display="spinner"
+            textColor="#FFFFFF"
+          />
+        </View>
       )}
     </TouchableOpacity>
   );

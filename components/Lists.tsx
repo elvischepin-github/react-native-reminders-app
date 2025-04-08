@@ -1,14 +1,5 @@
-import React from 'react';
-import {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
-  Button,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, FlatList, TouchableOpacity, TextInput} from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
@@ -35,28 +26,31 @@ interface ListElementProps {
 }
 
 export default function Lists() {
+  const [input, setInput] = useState('');
+
   const [reminders, setReminders] = useState<remindersType[]>([
     {id: 0, task: 'Coding exercise!'},
     {id: 1, task: 'Something!'},
     {id: 2, task: 'Nothing!'},
   ]);
 
-  const [input, setInput] = useState('');
-
-  const onChange = (typedText: string) => {
-    setInput(typedText);
-  };
-
   class Reminder {
     id: number;
     task: string;
+    isSheduled: boolean;
+    scheduledDate: Date;
 
     constructor(task: string) {
-      this.task = task;
       this.id = Date.now();
+      this.task = task;
+      this.isSheduled = false;
+      this.scheduledDate = new Date();
     }
-    setReminder() {}
   }
+
+  const whiteFiledInputChange = (typedText: string) => {
+    setInput(typedText);
+  };
 
   const addItem = () => {
     if (!input) {
@@ -75,15 +69,17 @@ export default function Lists() {
 
   return (
     <>
-      <View style={style.inputAndAddButtonContainer}>
+      <View style={style.centering}>
         <TextInput
           keyboardType="default"
           placeholder="Let's Go!"
           style={style.input}
           value={input}
-          onChangeText={onChange}
+          onChangeText={whiteFiledInputChange}
         />
-        <TouchableOpacity onPress={addItem} style={style.inputAddButton}>
+        <TouchableOpacity
+          onPress={addItem}
+          style={[style.inputAddButton, style.centering]}>
           <FontAwesomeIcon color={toggleOn} size={24} icon={faPlus} />
         </TouchableOpacity>
       </View>
@@ -93,11 +89,6 @@ export default function Lists() {
           renderItem={({item}) => (
             <>
               <ListElement task={item.task} id={item.id} />
-              {/* <TouchableOpacity
-              onPress={() => deleteItem(item.id)}
-              style={style.button}>
-              <FontAwesomeIcon icon={faMinus} color="firebrick" />
-            </TouchableOpacity> */}
             </>
           )}
         />
