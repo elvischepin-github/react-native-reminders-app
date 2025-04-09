@@ -12,9 +12,18 @@ import {style} from '../styles';
 interface ListElementProps {
   id: number;
   task: string;
+  isScheduled: boolean;
+  scheduledDate: Date;
+  setScheduledTime: (id: number, bool: boolean, date: Date) => void;
 }
 
-export default function ListElement({task, id}: ListElementProps) {
+export default function ListElement({
+  task,
+  id,
+  isScheduled,
+  scheduledDate,
+  setScheduledTime,
+}: ListElementProps) {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<'date' | 'time' | 'datetime'>('date');
   const [show, setShow] = useState(false);
@@ -34,35 +43,39 @@ export default function ListElement({task, id}: ListElementProps) {
     );
   }
 
-  const onChange = (event: any, selectedDate?: Date) => {
+  const onWidgetChange = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
   };
 
-  const showMode = (currentMode: 'date' | 'time' | 'datetime') => {
+  const widgetVisibilityState = (currentMode: 'date' | 'time' | 'datetime') => {
     setShow(true);
     setMode(currentMode);
   };
 
-  const showDatepicker = () => {
-    showMode('date');
+  const showDateWidgetPicker = () => {
+    widgetVisibilityState('date');
     setDoneButtonVisibility(true);
   };
 
-  const showTimepicker = () => {
-    showMode('time');
+  const showTimeWidgetPicker = () => {
+    widgetVisibilityState('time');
     setDoneButtonVisibility(true);
   };
 
-  const pushDoneDateAndTime = () => {
+  const confirmDateAndTimeButton = () => {
     setShow(false);
     setDoneButtonVisibility(false);
+    setScheduledTime(id, true, date);
     // printTime();
   };
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={Reminder =>
+        console.log({id, task, isScheduled}, scheduledDate.getDate())
+      }>
       <Text key={id} style={style.textReminderMain}>
         {task}
       </Text>
@@ -72,20 +85,20 @@ export default function ListElement({task, id}: ListElementProps) {
       <TouchableOpacity style={style.setDateAndTimeContainer}>
         <Text
           style={[style.setDateAndTimeButtons, style.centering]}
-          onPress={showDatepicker}>
+          onPress={showDateWidgetPicker}>
           <FontAwesomeIcon icon={faCalendar} />
           Add Date
         </Text>
         <Text
           style={[style.setDateAndTimeButtons, style.centering]}
-          onPress={showTimepicker}>
+          onPress={showTimeWidgetPicker}>
           <FontAwesomeIcon icon={faClock} />
           Add Time
         </Text>
         {doneButtonVisibility ? (
           <Text
             style={[style.setDateAndTimeButtons, style.centering]}
-            onPress={pushDoneDateAndTime}>
+            onPress={confirmDateAndTimeButton}>
             <FontAwesomeIcon icon={faCircleCheck} />
             Done
           </Text>
@@ -98,7 +111,7 @@ export default function ListElement({task, id}: ListElementProps) {
             value={date}
             mode={mode}
             is24Hour={true}
-            onChange={onChange}
+            onChange={onWidgetChange}
             display="spinner"
             textColor="#FFFFFF"
           />

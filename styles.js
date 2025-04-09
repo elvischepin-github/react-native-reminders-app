@@ -62,7 +62,7 @@ export const style = StyleSheet.create({
     paddingLeft: 50,
   },
 
-  // Other
+  // OTHER
   centering: {
     justifyContent: 'center',
     alignItems: 'center',

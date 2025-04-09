@@ -2,70 +2,77 @@ import React, {useState} from 'react';
 import {View, FlatList, TouchableOpacity, TextInput} from 'react-native';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import ListElement from './ListElement';
 
-import {
-  darkContrast,
-  lightContrast,
-  nonFocusText,
-  additional,
-  toggleOff,
-  toggleOn,
-  style,
-} from '../styles.js';
-
-interface remindersType {
-  id: number;
-  task: string;
-}
+import {style} from '../styles.js';
 
 interface ListElementProps {
   id: number;
   task: string;
+  isScheduled: boolean;
+  scheduledDate: Date;
 }
 
 export default function Lists() {
-  const [input, setInput] = useState('');
-
-  const [reminders, setReminders] = useState<remindersType[]>([
-    {id: 0, task: 'Coding exercise!'},
-    {id: 1, task: 'Something!'},
-    {id: 2, task: 'Nothing!'},
+  const [reminders, setReminders] = useState<ListElementProps[]>([
+    {
+      id: 0,
+      task: 'Coding exercise!',
+      isScheduled: false,
+      scheduledDate: new Date(),
+    },
+    {id: 1, task: 'Something!', isScheduled: false, scheduledDate: new Date()},
+    {id: 2, task: 'Nothing!', isScheduled: false, scheduledDate: new Date()},
   ]);
+
+  function setScheduledTime(id: number, bool: boolean, newDate: Date): void {
+    setReminders(
+      reminders.map(reminder =>
+        reminder.id == id
+          ? {...reminder, isScheduled: bool, scheduledDate: newDate}
+          : reminder,
+      ),
+    );
+  }
+
+  const [input, setInput] = useState('');
+  const whiteFiledInputChange = (typedText: string) => {
+    setInput(typedText);
+  };
+
+  const createNewReminder = () => {
+    if (!input) {
+      return;
+    } else {
+      const newReminder = new Reminder(input);
+      setReminders([
+        ...reminders,
+        {
+          id: newReminder.id,
+          task: input,
+          isScheduled: false,
+          scheduledDate: new Date(),
+        },
+      ]);
+      setInput('');
+      console.log(newReminder);
+    }
+  };
 
   class Reminder {
     id: number;
     task: string;
-    isSheduled: boolean;
+    isScheduled: boolean;
     scheduledDate: Date;
 
     constructor(task: string) {
       this.id = Date.now();
       this.task = task;
-      this.isSheduled = false;
+      this.isScheduled = false;
       this.scheduledDate = new Date();
     }
   }
-
-  const whiteFiledInputChange = (typedText: string) => {
-    setInput(typedText);
-  };
-
-  const addItem = () => {
-    if (!input) {
-      return;
-    } else {
-      const newReminder = new Reminder(input);
-      setReminders([...reminders, {id: newReminder.id, task: input}]);
-      setInput('');
-    }
-  };
-
-  // const deleteItem = (id: number) => {
-  //   setReminders(reminders.filter(element => element.id !== id));
-  //   console.log(id);
-  // };
 
   return (
     <>
@@ -78,9 +85,9 @@ export default function Lists() {
           onChangeText={whiteFiledInputChange}
         />
         <TouchableOpacity
-          onPress={addItem}
+          onPress={createNewReminder}
           style={[style.inputAddButton, style.centering]}>
-          <FontAwesomeIcon color={toggleOn} size={24} icon={faPlus} />
+          <FontAwesomeIcon color="#2FD159" size={24} icon={faPlus} />
         </TouchableOpacity>
       </View>
       <View style={style.container}>
@@ -88,7 +95,13 @@ export default function Lists() {
           data={reminders}
           renderItem={({item}) => (
             <>
-              <ListElement task={item.task} id={item.id} />
+              <ListElement
+                task={item.task}
+                id={item.id}
+                isScheduled={item.isScheduled}
+                scheduledDate={item.scheduledDate}
+                setScheduledTime={setScheduledTime}
+              />
             </>
           )}
         />
@@ -96,3 +109,8 @@ export default function Lists() {
     </>
   );
 }
+
+// const deleteItem = (id: number) => {
+//   setReminders(reminders.filter(element => element.id !== id));
+//   console.log(id);
+// };
