@@ -1,11 +1,12 @@
 import {useState} from 'react';
-import {Platform, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, Text, TouchableOpacity, TextInput, View} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faCalendar,
   faClock,
   faCircleCheck,
+  faCalendarXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import {style} from '../styles';
 
@@ -28,20 +29,6 @@ export default function ListElement({
   const [mode, setMode] = useState<'date' | 'time' | 'datetime'>('date');
   const [show, setShow] = useState(false);
   const [doneButtonVisibility, setDoneButtonVisibility] = useState(false);
-
-  function printTime() {
-    console.log(
-      date.getDate(),
-      '-',
-      date.getMonth() + 1,
-      '-',
-      date.getFullYear(),
-      ' ',
-      date.getHours(),
-      ':',
-      date.getMinutes(),
-    );
-  }
 
   const onWidgetChange = (event: any, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
@@ -68,42 +55,68 @@ export default function ListElement({
     setShow(false);
     setDoneButtonVisibility(false);
     setScheduledTime(id, true, date);
-    // printTime();
+  };
+
+  const resetDateAndTimeButton = () => {
+    setScheduledTime(id, false, new Date());
   };
 
   return (
     <TouchableOpacity
-      onPress={Reminder =>
-        console.log({id, task, isScheduled}, scheduledDate.getDate())
-      }>
-      <Text key={id} style={style.textReminderMain}>
-        {task}
-      </Text>
+    // onPress={Reminder =>
+    //   console.log(
+    //     {id, task, isScheduled},
+    //     scheduledDate.getDate(),
+    //     scheduledDate.getMonth() + 1,
+    //     scheduledDate.getFullYear(),
+    //     '-',
+    //     scheduledDate.getHours(),
+    //     scheduledDate.getMinutes(),
+    //   )
+    // }
+    >
+      <Text style={style.textReminderMain}>{task}</Text>
 
-      <Text style={style.textReminderNote}>Tomorrow, 07:00 🔁 Daily</Text>
+      <TextInput style={style.textReminderNote} value="Input note here" />
 
-      <TouchableOpacity style={style.setDateAndTimeContainer}>
+      {isScheduled ? (
+        <Text style={style.textReminderScheduled}>
+          {scheduledDate.getDate()}/{scheduledDate.getMonth() + 1}/
+          {scheduledDate.getFullYear()}, {scheduledDate.getHours()}:
+          {scheduledDate.getMinutes()}
+        </Text>
+      ) : null}
+
+      <View style={style.setDateAndTimeContainer}>
         <Text
           style={[style.setDateAndTimeButtons, style.centering]}
           onPress={showDateWidgetPicker}>
-          <FontAwesomeIcon icon={faCalendar} />
-          Add Date
+          <FontAwesomeIcon icon={faCalendar} /> Add Date
         </Text>
+
         <Text
           style={[style.setDateAndTimeButtons, style.centering]}
           onPress={showTimeWidgetPicker}>
-          <FontAwesomeIcon icon={faClock} />
-          Add Time
+          <FontAwesomeIcon icon={faClock} /> Add Time
         </Text>
+
         {doneButtonVisibility ? (
           <Text
             style={[style.setDateAndTimeButtons, style.centering]}
             onPress={confirmDateAndTimeButton}>
-            <FontAwesomeIcon icon={faCircleCheck} />
-            Done
+            <FontAwesomeIcon icon={faCircleCheck} /> Confirm
           </Text>
         ) : null}
-      </TouchableOpacity>
+
+        {isScheduled ? (
+          <Text
+            onPress={resetDateAndTimeButton}
+            style={[style.setDateAndTimeButtons, style.centering]}>
+            <FontAwesomeIcon icon={faCalendarXmark} /> Reset
+          </Text>
+        ) : null}
+      </View>
+
       {show && (
         <View style={style.centering}>
           <DateTimePicker

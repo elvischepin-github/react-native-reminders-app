@@ -38,7 +38,12 @@ export const style = StyleSheet.create({
   },
   textReminderNote: {
     backgroundColor: lightContrast,
-    color: 'white',
+    color: nonFocusText,
+    fontSize: 14,
+  },
+  textReminderScheduled: {
+    backgroundColor: lightContrast,
+    color: additional,
     fontSize: 14,
   },
   setDateAndTimeContainer: {
